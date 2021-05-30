@@ -1,0 +1,43 @@
+version: "3.8"
+
+x-restart-policy: &restart-policy
+  restart: always
+
+services:
+  db_demo:
+    image: mysql:8.0.22
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 5555:3306
+    volumes:
+      - "./db/conf.d/custom.cnf:/etc/mysql/conf.d/custom.cnf"
+      - ./db/data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456Aa@
+      - MYSQL_DATABASE=tacn
+    networks:
+      - mynet
+
+  server_demo:
+    image: node:14-alpine
+    depends_on:
+      - db_demo
+    ports:
+      - 3333:3000
+    command: "sh -c 'yarn && yarn start'"
+    networks:
+      - mynet
+    volumes:
+      - ./server:/app
+    working_dir: /app
+    environment:
+      - WAIT_HOSTS=db_demo:5555
+    links:
+      - db_demo
+    restart: always
+
+#   web:
+networks:
+  mynet:
+    driver: bridge

@@ -4,7 +4,7 @@ services:
     image: mysql:8.0.22
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - 5555:3306
+      - "5555:3306"
     volumes:
       - "./db/conf.d/custom.cnf:/etc/mysql/conf.d/custom.cnf"
       - ./db/data:/var/lib/mysql
@@ -12,6 +12,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456Aa@
       - MYSQL_DATABASE=tacn
+      - MYSQL_USER=tacn
+      - MYSQL_PASSWORD=123456Aa@
     networks:
       - mynet
 

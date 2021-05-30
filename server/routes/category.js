@@ -4,14 +4,16 @@ var router = express.Router();
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   var mysql = require("mysql");
+  const hostDemo = "db_demo";
   var connection = mysql.createConnection({
-    host: "13.212.199.143",
+    host: hostDemo,
     user: "root",
-    port: 5555,
+    port: 3306,
     password: "123456Aa@",
     database: "tacn",
   });
   connection.connect();
+
   connection.query("select * from user", function (error, results, fields) {
     if (error) throw error;
     res.json({

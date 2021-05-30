@@ -1,8 +1,4 @@
 version: "3.3"
-
-x-restart-policy: &restart-policy
-  restart: always
-
 services:
   db_demo:
     image: mysql:8.0.22
